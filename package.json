@@ -1,0 +1,22 @@
+{
+  "name": "gymanager",
+  "version": "1.0.0",
+  "description": "A Gym Management System using MySQL Database",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anuj-aggarwal/GyManager.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anuj-aggarwal/GyManager/issues"
+  },
+  "homepage": "https://github.com/anuj-aggarwal/GyManager#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
