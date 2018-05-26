@@ -12,7 +12,7 @@ passport.serializeUser((trainer, done) => done(null, trainer.id));
 passport.deserializeUser(async (id, done) => {
     try {
         const trainer = await Trainer.findById(id);
-        done(null, trainer);
+        done(null, trainer.dataValues);
     } catch (err) {
         console.error(err);
         done(err);
@@ -21,17 +21,17 @@ passport.deserializeUser(async (id, done) => {
 
 
 // Local Strategy
-passport.use(new LocalStrategy(async (id, password, done) => {
+passport.use("trainer", new LocalStrategy(async (id, password, done) => {
     try {
         const trainer = await Trainer.findById(id);
         // If trainer not found
         if (trainer === null)
             return done(null, false, { message: "Incorrect id!" });
         // Incorrect Password
-        if (trainer.password !== password)
+        if (trainer.dataValues.password !== password)
             return done(null, false, { message: "Incorrect password" });
         // Correct Credentials
-        return done(null, trainer);
+        return done(null, trainer.dataValues);
 
     } catch (err) {
         console.error(err);
