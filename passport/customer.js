@@ -8,9 +8,7 @@ const LocalStrategy = require("passport-local").Strategy;
 const { Customer } = require("../models");
 
 // Serializing user
-passport.serializeUser((customer, done) =>
-    done(null, customer.id)
-);
+passport.serializeUser((customer, done) => done(null, customer.membershipNo));
 
 // Deserializing User
 passport.deserializeUser(async (customerId, done) => {

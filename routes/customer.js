@@ -19,8 +19,7 @@ route.post("/signup", async (req, res, next) => {
 
         const joiningDate = Date.now();
         const customer = await Customer.create({ name, password, age, height, weight, joiningDate });
-
-        req.body.username = customer.id;
+        req.body.username = customer.dataValues.membershipNo;
 
         Passport.authenticate("customer", {
             successRedirect: "/",
