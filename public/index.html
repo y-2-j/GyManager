@@ -7,6 +7,9 @@
     <title>GyManager</title>
 </head>
 <body>
+    <!-- Trainer's login/Signup -->
+    <h2>Trainer's Login/Signup</h2>
+
     <!-- SIGNUP FORM -->
     <h2>Signup Form</h2>
     <form action="/trainers/signup" method="POST">
@@ -38,6 +41,49 @@
     <form action="/trainers/login" method="POST">
         <!-- Trainer Id -->
         <label for="id">Trainer Id: </label>
+        <input type="text" name="username" id="id">
+
+        <!-- Password -->
+        <label for="password">Password: </label>
+        <input type="password" name="password" id="password">
+
+        <button type="submit">Login</button>
+    </form>
+
+    <!-- Customer's Login/Signup -->
+    <h2>Customer's Login/Signup</h2>
+
+    <!-- SIGNUP FORM -->
+    <h2>Signup Form</h2>
+    <form action="/customers/signup" method="POST">
+        <!-- Name -->
+        <label for="name">Name: </label>
+        <input type="text" name="name" id="name">
+
+        <!-- Password -->
+        <label for="password">Password: </label>
+        <input type="password" name="password" id="password">
+
+        <!-- Age -->
+        <label for="age">Age: </label>
+        <input type="number" name="age" id="age">
+
+        <!-- Height -->
+        <label for="height">Height: </label>
+        <input type="number" name="height" id="height">
+
+        <!-- Weight -->
+        <label for="weight">Weight: </label>
+        <input type="number" name="weight" id="weight">
+
+        <button type="submit">SignUp</button>
+    </form>
+
+    <!-- LOGIN FORM -->
+    <h2>Login Form</h2>
+    <form action="/customers/login" method="POST">
+        <!-- Trainer Id -->
+        <label for="id">Customer Id: </label>
         <input type="text" name="username" id="id">
 
         <!-- Password -->
