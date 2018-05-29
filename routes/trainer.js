@@ -31,11 +31,5 @@ route.post("/login", passport.authenticate("trainer", {
     failureRedirect: "/"
 }));
 
-route.get("/logout", (req, res) => {
-    req.logout();
-    res.redirect("/");
-});
-
-
 
 module.exports = route;

@@ -28,7 +28,7 @@ passport.deserializeUser(async ({ membershipNo, type }, done) => {
         if (customer === null)
             throw new Error("Serialized Customer not found!!");
 
-        done(null, customer.dataValues);
+        done(null, { ...customer.dataValues, type: "customer" });
         
     } catch (err) {
         console.error(err);

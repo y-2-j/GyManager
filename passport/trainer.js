@@ -25,7 +25,7 @@ passport.deserializeUser(async ({ id, type }, done) => {
         if (trainer === null)
             throw new Error("Serialized Trainer not found!!");
         
-        done(null, trainer.dataValues);
+        done(null, { ...trainer.dataValues, type: "trainer" });
         
     } catch (err) {
         console.error(err);

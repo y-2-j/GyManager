@@ -31,10 +31,5 @@ route.post("/signup", async (req, res, next) => {
     }
 });
 
-// Logout
-route.get("/logout", (req, res) => {
-    req.logout();
-    res.redirect("/");
-});
 
 module.exports = route;
