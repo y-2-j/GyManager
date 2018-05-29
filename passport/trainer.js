@@ -6,13 +6,27 @@ const LocalStrategy = require("passport-local").Strategy;
 const { Trainer } = require("../models");
 
 // Serialize Trainer
-passport.serializeUser((trainer, done) => done(null, trainer.id));
+passport.serializeUser((trainer, done) => {
+    // If its not a trainer, don't try to serialize, and pass the responsibility to other serialize functions
+    if (!trainer.id)
+        return done("pass");
+    done(null, { id: trainer.id, type: "trainer" });
+});
 
 // Deserialize Trainer
-passport.deserializeUser(async (id, done) => {
+passport.deserializeUser(async ({ id, type }, done) => {
     try {
+        // If type is not trainer, dont try to deserialize it, and pass responsibility to other functions
+        if (type !== "trainer")
+            return done("pass");
+        
         const trainer = await Trainer.findById(id);
+        // If trainer not found, error!
+        if (trainer === null)
+            throw new Error("Serialized Trainer not found!!");
+        
         done(null, trainer.dataValues);
+        
     } catch (err) {
         console.error(err);
         done(err);
