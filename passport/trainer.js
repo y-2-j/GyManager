@@ -1,6 +1,6 @@
 // Require Passport
 const passport = require("passport");
-const LocalStrategy = require("passport-local");
+const LocalStrategy = require("passport-local").Strategy;
 
 // User files
 const { Trainer } = require("../models");

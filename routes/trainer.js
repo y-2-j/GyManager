@@ -12,7 +12,7 @@ route.post("/signup", async (req, res, next) => {
         const experience = req.body.experience || undefined;
 
         const trainer = await Trainer.create({ name, password, startTime, endTime, experience });
-        req.body.username = trainer.id;
+        req.body.username = trainer.dataValues.id;
 
         passport.authenticate("trainer", {
             successRedirect: "/",
