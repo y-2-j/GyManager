@@ -39,10 +39,13 @@ Allotment.belongsTo(Equipment);
 Equipment.hasMany(Allotment);
 
 
-
-db.sync({ force: true })
+db.authenticate()
+  .then(() => db.sync({ alter: true }))
   .then(() => console.log("Database Ready!"))
-  .catch(err => console.error(err));
+  .catch(err => {
+      console.error("Database Connection Failure: ", err);
+      process.exit();
+  });
 
 // Export the Database and Connection
 module.exports = { Branch, Customer, Trainer, Equipment, db };
