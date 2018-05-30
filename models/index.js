@@ -40,7 +40,7 @@ Equipment.hasMany(Allotment);
 
 
 
-db.sync({ force: true })
+db.sync({ force: false })
   .then(() => console.log("Database Ready!"))
   .catch(err => console.error(err));
 
