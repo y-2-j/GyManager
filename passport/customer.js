@@ -37,7 +37,10 @@ passport.deserializeUser(async ({ membershipNo, type }, done) => {
 });
 
 // Using local Strategy
-passport.use("customer", new LocalStrategy(async (id, password, done) => {
+passport.use("customer", new LocalStrategy({
+    usernameField: "membershipNo",
+    passwordField: "password"
+}, async (id, password, done) => {
     try {
         const customer = await Customer.findById(id);
         //No such user
