@@ -8,13 +8,28 @@ const LocalStrategy = require("passport-local").Strategy;
 const { Customer } = require("../models");
 
 // Serializing user
-passport.serializeUser((customer, done) => done(null, customer.membershipNo));
+passport.serializeUser((customer, done) => {
+    // If its not a customer, don't try to serialize, and pass the responsibility to other serialize functions
+    if (!customer.membershipNo)
+        return done("pass");
+    done(null, { membershipNo: customer.membershipNo, type: "customer" });
+});
 
 // Deserializing User
-passport.deserializeUser(async (customerId, done) => {
+passport.deserializeUser(async ({ membershipNo, type }, done) => {
     try {
-        const customer = await Customer.findById(customerId);
-        done(null, customer.dataValues);
+        // If type is not customer, dont try to deserialize it, and pass responsibility to other functions
+        if (type !== "customer")
+            return done("pass");
+
+        const customer = await Customer.findById(membershipNo);
+
+        // If customer not found, error!
+        if (customer === null)
+            throw new Error("Serialized Customer not found!!");
+
+        done(null, { ...customer.dataValues, type: "customer" });
+        
     } catch (err) {
         console.error(err);
         done(err);
@@ -22,7 +37,10 @@ passport.deserializeUser(async (customerId, done) => {
 });
 
 // Using local Strategy
-passport.use("customer", new LocalStrategy(async (id, password, done) => {
+passport.use("customer", new LocalStrategy({
+    usernameField: "membershipNo",
+    passwordField: "password"
+}, async (id, password, done) => {
     try {
         const customer = await Customer.findById(id);
         //No such user
