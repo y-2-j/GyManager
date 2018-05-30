@@ -25,9 +25,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-app.use("/", express.static(path.join(__dirname, "public")));
-
-
 // ROUTES
 app.use("/", require("./routes"));
 
