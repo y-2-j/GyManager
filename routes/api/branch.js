@@ -120,8 +120,10 @@ route.post("/:id/apply", checkTrainerLoggedIn, async (req, res) => {
             return res.status(400).send({ err: "Cannot join more than one Branch at a time!" });
         }
         
-        const application = await trainer.addBranch(branch, { through: { status: "PENDING" }});
-        res.send({ trainerId: trainer.id, branchId: branch.id, status: "PENDING" });
+        await trainer.addBranches(branch, { through: { status: "PENDING" }});
+        const application = await trainer.getBranches({ where: { id: branch.id } });
+        const { createdAt, updatedAt, ...toSend } = application[0]["branch_trainer"].dataValues;
+        res.send(toSend);
 
     } catch (err) {
         console.error(err);

@@ -24,8 +24,8 @@ const BranchTrainer = db.import("./branch_trainer");
 Customer.belongsTo(Branch);
 Branch.hasMany(Customer);
 
-Trainer.belongsToMany(Branch, { through: BranchTrainer });
-Branch.belongsToMany(Trainer, { through: BranchTrainer });
+Trainer.belongsToMany(Branch, { through: BranchTrainer, constraints: false });
+Branch.belongsToMany(Trainer, { through: BranchTrainer, constraints: false });
 
 Customer.belongsTo(Trainer);
 Trainer.hasMany(Customer);
