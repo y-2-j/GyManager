@@ -27,7 +27,7 @@ const authenticateBranch = (req, res, next) => {
 route.post("/", async (req, res, next) => {
     try {
         const { id, ...branchDetails } = req.body;
-        
+
         const branch = await Branch.create(branchDetails);
         req.body.id = branch.dataValues.id;
 
@@ -105,6 +105,62 @@ route.put("/:id", checkBranchLoggedIn, async (req, res) => {
 });
 
 
+const checkAvailability = async (branch) => {
+    // Array to be sent
+    // Has 24 booleans corresponding to whether branch can accomodate the customer at ith hour or not
+    const availability = [];
+
+    for (let i = 0; i < 24; ++i) {
+        const time = i * 10000;
+
+        // Find all trainers and their customers at ith Hour
+        const trainers = await branch.getTrainers({
+            where: {
+                // Must be available at ith hour
+                startTime: {
+                    [Op.lte]: time
+                },
+                endTime: {
+                    [Op.gte]: time + 10000
+                }
+            },
+            include: {
+                model: Customer,
+                required: false,
+                // All Customers attended to at that hour
+                where: {
+                    preferredTime: time
+                }
+            }
+        });
+
+        // Find a free trainer
+        if (trainers.findIndex(trainer => trainer.customers.length < 5) === -1) {
+            // If no free trainer found can't accomodate customer at this time 
+            availability[i] = false;
+            continue;
+        }
+
+        // Find number of customers in Gym at ith hour
+        const numCustomers = await branch.countCustomers({
+            where: {
+                preferredTime: time
+            }
+        });
+
+        if (numCustomers === branch.dataValues.capacity) {
+            // If the Branch does not have more space for the customer
+            availability[i] = false;
+            continue;
+        }
+
+        // Else, customer can be accomodated
+        availability[i] = true;
+    }
+    return availability;
+}
+
+
 // GET Route for availability of a branch
 route.get("/:id/availability", async (req, res) => {
     try {
@@ -112,58 +168,8 @@ route.get("/:id/availability", async (req, res) => {
         const branch = await Branch.findById(req.params.id);
         if (branch === null)
             return res.status(404).send({ err: "Branch not found!" });
-        
-        // Array to be sent
-        // Has 24 booleans corresponding to whether branch can accomodate the customer at ith hour or not
-        const availability = [];
 
-        for (let i = 0; i < 24; ++i) {
-            const time = i*10000;
-
-            // Find all trainers and their customers at ith Hour
-            const trainers = await branch.getTrainers({   
-                where: {
-                    // Must be available at ith hour
-                    startTime: {
-                        [Op.lte]: time
-                    },
-                    endTime: {
-                        [Op.gte]: time + 10000
-                    }
-                },
-                include: {
-                    model: Customer,
-                    required: false,
-                    // All Customers attended to at that hour
-                    where: {
-                        preferredTime: time
-                    }
-                }
-            });
-
-            // Find a free trainer
-            if (trainers.findIndex(trainer => trainer.customers.length < 5) === -1) {
-                // If no free trainer found can't accomodate customer at this time 
-                availability[i] = false;
-                continue;
-            }
-
-            // Find number of customers in Gym at ith hour
-            const numCustomers = await branch.countCustomers({
-                where: {
-                    preferredTime: time
-                }
-            });
-
-            if (numCustomers === branch.dataValues.capacity) {
-                // If the Branch does not have more space for the customer
-                availability[i] = false;
-                continue;
-            }
-
-            // Else, customer can be accomodated
-            availability[i] = true;
-        }
+        const availability = await checkAvailability(branch);
 
         // Send the Availability Array to User
         res.send(availability);
@@ -174,5 +180,78 @@ route.get("/:id/availability", async (req, res) => {
     }
 });
 
+
+// Function to get a free trainer in the branch at the preferred time
+// return null if branch not available
+const getfreeTrainer = async (branch, preferredTime) => {
+    // Find all trainers and their customers at ith Hour
+    const trainers = await branch.getTrainers({
+        where: {
+            // Must be available at ith hour
+            startTime: {
+                [Op.lte]: preferredTime
+            },
+            endTime: {
+                [Op.gte]: preferredTime + 10000
+            }
+        },
+        include: {
+            model: Customer,
+            required: false,
+            // All Customers attended to at that hour
+            where: {
+                preferredTime
+            }
+        }
+    });
+    console.log(trainers);
+
+    // Find a free trainer
+    const trainer = trainers.find(trainer => trainer.customers.length < 5);
+    if (trainer === undefined)
+        return null;
+
+    // Find number of customers in Gym at ith hour
+    const numCustomers = await branch.countCustomers({ where: { preferredTime } });
+    if (numCustomers === branch.dataValues.capacity) {
+        // If the Branch does not have more space for the customer
+        return null;
+    }
+
+    return trainer;
+};
+
+
+// POST route for customer to join a branch
+route.post("/:id/join", checkCustomerLoggedIn, async (req, res) => {
+    try {
+        const preferredTime = parseInt(req.body.preferredTime)
+        const branchId = req.params.id;
+        const membershipNo = req.user.membershipNo;
+
+        const branch = await Branch.findById(branchId);
+        if (branch === null)
+            return res.status(404).send({ err: "Branch not found!" });
+
+        const trainer = await getfreeTrainer(branch, preferredTime);
+        if (trainer === null)
+            return res.status(404).send({ err: "Branch not available!" });
+
+        const customer = await Customer.findById(membershipNo);
+
+        await Promise.all([
+            customer.update({ preferredTime }),
+            customer.setBranch(branch),
+            customer.setTrainer(trainer)
+        ]);
+
+        const { password, salary, createdAt, updatedAt, customers, ...toSend } = trainer.dataValues;
+        res.send(toSend);
+
+    } catch (err) {
+        console.error(err.stack);
+        res.sendStatus(500);
+    }
+});
 
 module.exports = route;
