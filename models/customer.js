@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
         expiryDate: DataTypes.DATEONLY,
         height: DataTypes.REAL,
         weight: DataTypes.REAL,
-        fees: DataTypes.INTEGER
+        fees: DataTypes.INTEGER,
+        preferredTime: DataTypes.TIME   // Assume duration 1 hours
     });
 };

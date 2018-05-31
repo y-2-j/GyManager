@@ -31,8 +31,7 @@ route.post("/signup", async (req, res, next) => {
     try {
         const { name, password, age, height, weight } = req.body;
 
-        const joiningDate = Date.now();
-        const customer = await Customer.create({ name, password, age, height, weight, joiningDate });
+        const customer = await Customer.create({ name, password, age, height, weight });
         req.body.membershipNo = customer.dataValues.membershipNo;
 
         authenticateCustomer(req, res, next);
@@ -66,7 +65,7 @@ route.get("/:membershipNo", checkCustomerLoggedIn, async (req, res) => {
 
 
 // PUT Route to update single customer's details
-// Cannot update membershipNo or branchId by this route
+// Can update: name, password, age, height, weight
 route.put("/:membershipNo", checkCustomerLoggedIn, async (req, res) => {
     try {
         if (req.user.membershipNo != req.params.membershipNo) { // Explicit coersion
@@ -74,8 +73,8 @@ route.put("/:membershipNo", checkCustomerLoggedIn, async (req, res) => {
         }
 
         // Prevent changing membershipNo and branchId
-        const { membershipNo, branchId, ...updateValues } = req.body;
-        await Customer.update(updateValues, {
+        const { name, password, age, height, weight } = req.body;
+        await Customer.update({ name, password, age, height, weight }, {
             where: { membershipNo: req.params.membershipNo }
         });
 

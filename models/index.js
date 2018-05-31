@@ -26,6 +26,9 @@ Branch.hasMany(Customer);
 Trainer.belongsTo(Branch);
 Branch.hasMany(Trainer);
 
+Customer.belongsTo(Trainer);
+Trainer.hasMany(Customer);
+
 Branch.belongsToMany(Equipment, { through: BranchEquipment });
 Equipment.belongsToMany(Branch, { through: BranchEquipment });
 
@@ -35,8 +38,8 @@ Customer.hasMany(Allotment);
 Allotment.belongsTo(Trainer);
 Trainer.hasMany(Allotment);
 
-Allotment.belongsTo(Equipment);
-Equipment.hasMany(Allotment);
+Allotment.belongsTo(Branch);
+Branch.hasMany(Allotment);
 
 
 db.authenticate()
