@@ -2,9 +2,11 @@ const route = require("express").Router();
 
 const passport = require("passport");
 
+const { Op } = require("sequelize");
+
 // Requiring branch model
-const { Branch } = require("../../models");
-const { checkBranchLoggedIn } = require("../../utils/auth");
+const { Branch, Customer, Trainer } = require("../../models");
+const { checkBranchLoggedIn, checkCustomerLoggedIn } = require("../../utils/auth");
 
 
 const authenticateBranch = (req, res, next) => {
@@ -95,6 +97,76 @@ route.put("/:id", checkBranchLoggedIn, async (req, res) => {
             attributes: { exclude: ["password", "createdAt", "updatedAt"] }
         });
         res.send(branch);
+
+    } catch (err) {
+        console.error(err.stack);
+        res.sendStatus(500);
+    }
+});
+
+
+// GET Route for availability of a branch
+route.get("/:id/availability", async (req, res) => {
+    try {
+        // Check if branch exists
+        const branch = await Branch.findById(req.params.id);
+        if (branch === null)
+            return res.status(404).send({ err: "Branch not found!" });
+        
+        // Array to be sent
+        // Has 24 booleans corresponding to whether branch can accomodate the customer at ith hour or not
+        const availability = [];
+
+        for (let i = 0; i < 24; ++i) {
+            const time = i*10000;
+
+            // Find all trainers and their customers at ith Hour
+            const trainers = await branch.getTrainers({   
+                where: {
+                    // Must be available at ith hour
+                    startTime: {
+                        [Op.lte]: time
+                    },
+                    endTime: {
+                        [Op.gte]: time + 10000
+                    }
+                },
+                include: {
+                    model: Customer,
+                    required: false,
+                    // All Customers attended to at that hour
+                    where: {
+                        preferredTime: time
+                    }
+                }
+            });
+
+            // Find a free trainer
+            if (trainers.findIndex(trainer => trainer.customers.length < 5) === -1) {
+                // If no free trainer found can't accomodate customer at this time 
+                availability[i] = false;
+                continue;
+            }
+
+            // Find number of customers in Gym at ith hour
+            const numCustomers = await branch.countCustomers({
+                where: {
+                    preferredTime: time
+                }
+            });
+
+            if (numCustomers === branch.dataValues.capacity) {
+                // If the Branch does not have more space for the customer
+                availability[i] = false;
+                continue;
+            }
+
+            // Else, customer can be accomodated
+            availability[i] = true;
+        }
+
+        // Send the Availability Array to User
+        res.send(availability);
 
     } catch (err) {
         console.error(err.stack);
