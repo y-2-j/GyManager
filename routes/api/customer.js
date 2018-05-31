@@ -5,6 +5,7 @@ const Passport = require("passport");
 
 //Requiring customer model
 const { Customer } = require("../../models");
+const { checkCustomerLoggedIn } = require("../../utils/auth");
 
 // HELPERS
 const authenticateCustomer = (req, res, next) => {
@@ -40,5 +41,54 @@ route.post("/signup", async (req, res, next) => {
         res.sendStatus(500);
     }
 });
+
+
+// GET Route for a customer's details: 
+// Customer details are kept private, Only Customer can check his details
+route.get("/:membershipNo", checkCustomerLoggedIn, async (req, res) => {
+    try {
+        if (req.user.membershipNo != req.params.membershipNo) { // Explicit Coersion
+            return res.status(401).send({ err: "Cannot See other Customer's Details" });
+        }
+
+        const attributes = { exclude: ["password", "createdAt", "updatedAt"] };
+        const customer = await Customer.findById(req.params.membershipNo, { attributes, raw: true });
+        if (customer === null)
+            return res.status(404).send({ err: "Customer not found!" });
+        
+        res.send(customer);
+
+    } catch (err) {
+        console.error(err.stack);
+        res.sendStatus(500);
+    }
+});
+
+
+// PUT Route to update single customer's details
+// Cannot update membershipNo or branchId by this route
+route.put("/:membershipNo", checkCustomerLoggedIn, async (req, res) => {
+    try {
+        if (req.user.membershipNo != req.params.membershipNo) { // Explicit coersion
+            return res.status(401).send({ err: "Cannot Change other Customer's details!" });
+        }
+
+        // Prevent changing membershipNo and branchId
+        const { membershipNo, branchId, ...updateValues } = req.body;
+        await Customer.update(updateValues, {
+            where: { membershipNo: req.params.membershipNo }
+        });
+
+        const customer = await Customer.findById(req.params.membershipNo, {
+            attributes: { exclude: ["password", "createdAt", "updatedAt"] }
+        });
+        res.send(customer);
+
+    } catch (err) {
+        console.error(err.stack);
+        res.sendStatus(500);
+    }
+});
+
 
 module.exports = route;
