@@ -10,7 +10,7 @@ const { Customer } = require("../models");
 // Serializing user
 passport.serializeUser((customer, done) => {
     // If its not a customer, don't try to serialize, and pass the responsibility to other serialize functions
-    if (!customer.membershipNo)
+    if (customer.type !== "customer")
         return done("pass");
     done(null, { membershipNo: customer.membershipNo, type: "customer" });
 });
@@ -50,7 +50,7 @@ passport.use("customer", new LocalStrategy({
         if (customer.dataValues.password !== password)
             return done(null, false, { message: "Password doesn't match!" });
         //Correct credentials
-        return done(null, customer.dataValues);
+        return done(null, { ...customer.dataValues, type: "customer" });
 
     } catch (err) {
         console.error(err);

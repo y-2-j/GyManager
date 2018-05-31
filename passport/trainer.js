@@ -8,7 +8,7 @@ const { Trainer } = require("../models");
 // Serialize Trainer
 passport.serializeUser((trainer, done) => {
     // If its not a trainer, don't try to serialize, and pass the responsibility to other serialize functions
-    if (!trainer.id)
+    if (trainer.type !== "trainer")
         return done("pass");
     done(null, { id: trainer.id, type: "trainer" });
 });
@@ -48,7 +48,7 @@ passport.use("trainer", new LocalStrategy({
         if (trainer.dataValues.password !== password)
             return done(null, false, { message: "Incorrect password" });
         // Correct Credentials
-        return done(null, trainer.dataValues);
+        return done(null, { ...trainer.dataValues, type: "trainer" });
 
     } catch (err) {
         console.error(err);
