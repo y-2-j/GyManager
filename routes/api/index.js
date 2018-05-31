@@ -12,4 +12,7 @@ route.use("/trainers", require("./trainer"));
 // Requiring customer's route
 route.use("/customers", require("./customer"));
 
+// Requiring branches' route
+route.use("/branches", require("./branch"));
+
 module.exports = route;
