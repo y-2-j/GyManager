@@ -18,13 +18,14 @@ const Trainer = db.import("./trainer");
 const Equipment = db.import("./equipment");
 const BranchEquipment = db.import("./branch_equipment");
 const Allotment = db.import("./allotment");
+const BranchTrainer = db.import("./branch_trainer");
 
 // Associations
 Customer.belongsTo(Branch);
 Branch.hasMany(Customer);
 
-Trainer.belongsTo(Branch);
-Branch.hasMany(Trainer);
+Trainer.belongsToMany(Branch, { through: BranchTrainer });
+Branch.belongsToMany(Trainer, { through: BranchTrainer });
 
 Customer.belongsTo(Trainer);
 Trainer.hasMany(Customer);
