@@ -52,4 +52,4 @@ db.authenticate()
   });
 
 // Export the Database and Connection
-module.exports = { Branch, Customer, Trainer, Equipment, Allotment, db };
+module.exports = { Branch, Customer, Trainer, Equipment, Allotment, BranchTrainer, db };
