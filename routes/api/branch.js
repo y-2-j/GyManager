@@ -1,11 +1,12 @@
 const route = require("express").Router();
 
+const moment = require("moment");
 const passport = require("passport");
 
 const { Op } = require("sequelize");
 
 // Requiring branch model
-const { Branch, Customer, Trainer, Equipment } = require("../../models");
+const { Branch, Customer, Trainer, Equipment, Allotment, BranchTrainer } = require("../../models");
 const { checkBranchLoggedIn, checkTrainerLoggedIn, checkCustomerLoggedIn } = require("../../utils/auth");
 
 
@@ -392,5 +393,115 @@ route.get("/:id/customers", checkBranchLoggedIn, async (req, res) => {
         res.sendStatus(500);
     }
 })
+
+
+
+// GET Route to Get Attendance Report for the Branch's Customers of any Date
+// Default Date: Current Date
+route.get("/:id/attendance", checkBranchLoggedIn, async (req, res) => {
+    try {
+        // Check if current branch is same as in parameters
+        if (req.params.id != req.user.id)   // Explicit Coersion
+            return res.status(401).send({ err: "Cannot see other Branch's Details!" });
+
+        // Get Date to find Attendance for
+        let date = null;
+        if (req.query.date)
+            date = moment(req.query.date);
+        else
+            date = moment();
+        
+        // Find the Branch along with Customers, and their allotments for the date
+        const branch = await Branch.findById(req.params.id, {
+            include: [{
+                model: Customer,
+                attributes: ["membershipNo", "name", "preferredTime"],
+                include: [{
+                    model: Allotment,
+                    where: {
+                        branchId: req.params.id,
+                        time: {
+                            [Op.gte]: date.format("YYYY-MM-DD"),
+                            [Op.lt]: date.add(1, 'days').format("YYYY-MM-DD")
+                        }
+                    },
+                    required: false
+                }]
+            }]
+        });
+
+        // Optimize the Result
+        const customers = branch.customers.map(customer => {
+            const { allotments, ...toReturn } = customer.dataValues;
+            return { ...toReturn, allotment: allotments[0] && allotments[0].dataValues }
+        });
+
+        // Send the list of Customers with their Allotment on specified Date
+        res.send(customers);
+
+    } catch (err) {
+        console.error(err);
+        res.sendStatus(500);
+    }
+});
+
+// GET route to retrieve all pending Trainer Application Requests
+route.get("/:id/applications", checkBranchLoggedIn, async (req, res) => {
+
+    const branch = await Branch.findById(req.params.id, {
+        attributes: [],
+        include: {
+            model: Trainer,
+            attributes: { exclude: ["password"] },
+            through: {
+                where: {
+                    status: "PENDING"
+                }
+            }
+        }
+    });
+
+    // Check if branch exists
+    if (branch === null)
+        res.status(404).send({ err: "Branch not found" });
+
+    // Check if user is the branch owner
+    if (req.params.id != req.user.id)
+        res.status(401).send({ err: "Not allowed to view other branch's details" });
+
+    res.send(branch.trainers);
+});
+
+// POST route to accept a pending application
+route.post("/:id/applications/:applicationNo/accept", checkBranchLoggedIn, async (req, res) => {
+    const application = await BranchTrainer.findById(req.params.applicationNo);
+
+    // Check if user is the branch owner
+    if (req.params.id != req.user.id || req.params.id != application.branchId)
+        res.status(401).send({ err: "Not allowed to change other branch's details" });
+
+    // Check for status of Application
+    if (application.status != "PENDING")
+        return res.status(400).send({ err: "Can approve only Pending Requests!" });
+
+    application.status = "APPROVED";
+    res.send(await application.save());
+});
+
+// POST route to reject a pending application
+route.post("/:id/applications/:applicationNo/reject", checkBranchLoggedIn, async (req, res) => {
+    const application = await BranchTrainer.findById(req.params.applicationNo);
+
+    // Check if user is the branch owner
+    if (req.params.id != req.user.id || req.params.id != application.branchId)
+        res.status(401).send({ err: "Not allowed to change other branch's details" });
+
+    // Check for status of Application
+    if (application.status != "PENDING")
+        return res.status(400).send({ err: "Can reject only Pending Requests!" });
+
+    application.status = "REJECTED";
+    res.send(await application.save());
+});
 
 module.exports = route;
