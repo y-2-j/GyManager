@@ -178,7 +178,7 @@ route.post("/join", checkCustomerLoggedIn, async (req, res) => {
             customer.setTrainer(trainer)
         ]);
 
-        const { password, salary, createdAt, updatedAt, customers, ...toSend } = trainer.dataValues;
+        const { password, salary, createdAt, updatedAt, customers, branch_trainer, ...toSend } = trainer.dataValues;
         res.send(toSend);
 
     } catch (err) {
