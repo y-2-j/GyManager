@@ -7,7 +7,7 @@ const CONFIG = require("../config");
 // Connect to Database
 const db = new Sequelize(CONFIG.DB.DATABASE, CONFIG.DB.USER, CONFIG.DB.PASSWORD, {
 	host: CONFIG.DB.HOST,
-	dialect: "mysql"
+  dialect: "mysql"
 });
 
 
@@ -33,14 +33,14 @@ Trainer.hasMany(Customer);
 Branch.belongsToMany(Equipment, { through: BranchEquipment });
 Equipment.belongsToMany(Branch, { through: BranchEquipment });
 
-Allotment.belongsTo(Customer);
-Customer.hasMany(Allotment);
+Allotment.belongsTo(Customer, { constraints: false });
+Customer.hasMany(Allotment, { constraints: false });
 
-Allotment.belongsTo(Trainer);
-Trainer.hasMany(Allotment);
+Allotment.belongsTo(Trainer, { constraints: false });
+Trainer.hasMany(Allotment, { constraints: false });
 
-Allotment.belongsTo(Branch);
-Branch.hasMany(Allotment);
+Allotment.belongsTo(Branch, { constraints: false });
+Branch.hasMany(Allotment, { constraints: false });
 
 
 db.authenticate()
@@ -52,4 +52,4 @@ db.authenticate()
   });
 
 // Export the Database and Connection
-module.exports = { Branch, Customer, Trainer, Equipment, db };
+module.exports = { Branch, Customer, Trainer, Equipment, Allotment, db };

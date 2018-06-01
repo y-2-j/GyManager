@@ -1,11 +1,15 @@
 const route = require("express").Router();
 
+const moment = require("moment");
 // Requiring passport
 const Passport = require("passport");
 
+const Sequelize = require("sequelize");
+const Op = Sequelize.Op;
+
 //Requiring customer model
-const { Customer } = require("../../models");
-const { checkCustomerLoggedIn } = require("../../utils/auth");
+const { Customer, Branch, Allotment } = require("../../models");
+const { checkBranchLoggedIn, checkCustomerLoggedIn } = require("../../utils/auth");
 
 // HELPERS
 const authenticateCustomer = (req, res, next) => {
@@ -89,5 +93,55 @@ route.put("/:membershipNo", checkCustomerLoggedIn, async (req, res) => {
     }
 });
 
+
+// POST Route to update Attendance of Customer
+route.post("/:membershipNo/attendance", checkBranchLoggedIn, async (req, res) => {
+    try {
+        // Find the customer, with branch
+        const customer = await Customer.findById(req.params.membershipNo, {
+            include: [{
+                model: Branch,
+                // Check if current Branch is same as his Branch
+                where: {
+                    id: req.user.id
+                }
+            }, {
+                model: Allotment,
+                where: {
+                    branchId: req.user.id,
+                    time: {
+                        [Op.gte]: moment().format("YYYY-MM-DD")
+                    }
+                },
+                required: false
+            }]
+        });
+
+        if (customer === null) {
+            res.status(404).send({ err: "No such Customer found in your Branch!" });
+        }
+
+        
+        // Check if Customer already alloted today, if yes, update time and return
+        if (customer.allotments.length != 0) {
+            const allotment = customer.allotments[0];
+            await allotment.update({ time: moment() });
+            return res.send(allotment);
+        }
+        else {
+            const allotment = await Allotment.create({ time: moment() });
+            await Promise.all([
+                allotment.setCustomer(customer),
+                allotment.setBranch(customer.branch),
+                allotment.setTrainer(customer.trainerId)
+            ]);
+            return res.send(await allotment.reload());
+        }
+
+    } catch (err) {
+        console.error(err);
+        res.sendStatus(500);
+    }
+});
 
 module.exports = route;
