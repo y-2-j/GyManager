@@ -2,7 +2,7 @@ const route = require("express").Router();
 
 const passport = require("passport");
 
-const { Trainer } = require("../../models");
+const { Trainer, Customer } = require("../../models");
 const { checkTrainerLoggedIn } = require("../../utils/auth");
 
 
@@ -87,5 +87,33 @@ route.put("/:id", checkTrainerLoggedIn, async (req, res) => {
         res.sendStatus(500);
     }
 });
+
+//GET route to see all customers of a trainer
+route.get("/:id/customers", checkTrainerLoggedIn, async (req, res)=>{
+    try{
+        // Check if trainer exists
+        const trainer = await Trainer.findById(req.params.id);
+        if(trainer === null)
+            res.status(404).send({err: "No trainer exists"});
+
+        // Check if trainer is same as being requested for
+        if (req.user.id != req.params.id)    // explicit coersion
+            return res.status(401).send({ err: "Cannot view other trainer's data!" });
+        
+        const customers = await Customer.findAll({
+            where:{
+                trainerId: req.params.id
+            },
+            attributes:{
+                exclude:["password"]
+            }
+        });
+        res.send(customers);
+
+    }catch(err){
+        console.error(err);
+        res.sendStatus(500);
+    }
+}) 
 
 module.exports = route;
