@@ -2,7 +2,7 @@ const route = require("express").Router();
 
 const passport = require("passport");
 
-const { Trainer } = require("../../models");
+const { Trainer, Branch } = require("../../models");
 const { checkTrainerLoggedIn } = require("../../utils/auth");
 
 
@@ -25,7 +25,10 @@ const authenticateTrainer = (req, res, next) => {
 // Signup
 route.post("/signup", async (req, res, next) => {
     try {
-        const { name, password, startTime, endTime } = req.body;
+        const { name, password } = req.body;
+        let { startTime, endTime } = req.body;
+        startTime *= 10000;
+        endTime *= 10000;
 
         const experience = req.body.experience || undefined;
 
@@ -87,5 +90,29 @@ route.put("/:id", checkTrainerLoggedIn, async (req, res) => {
         res.sendStatus(500);
     }
 });
+
+
+// GET Route for all Applications of the Trainer
+route.get("/:id/applications", checkTrainerLoggedIn, async (req, res) => {
+    try {
+        if (req.params.id != req.user.id)   // Explicit Coersion
+            return res.status(401).send({ err: "Cannot see other Trainer's Details!" });
+        
+        const trainer = await Trainer.findById(req.params.id, {
+            attributes: [],
+            include: [{
+                model: Branch,
+                attributes: { exclude: ["password"] }
+            }]
+        });
+
+        res.send(trainer.branches);
+
+    } catch (err) {
+        console.error(err);
+        res.sendStatus(500);
+    }
+});
+
 
 module.exports = route;
