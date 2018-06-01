@@ -241,6 +241,9 @@ const checkAvailability = async (branch) => {
                     [Op.gte]: time + 10000
                 }
             },
+            through: {
+                where: { status: "APPROVED" }
+            },
             include: [{
                 model: Customer,
                 required: false,
@@ -311,6 +314,9 @@ const getfreeTrainer = async (branch, preferredTime) => {
             endTime: {
                 [Op.gte]: preferredTime + 10000
             }
+        },
+        through: {
+            where: { status: "APPROVED" }
         },
         include: [{
             model: Customer,
@@ -473,7 +479,7 @@ route.get("/:id/applications", checkBranchLoggedIn, async (req, res) => {
 });
 
 // POST route to accept a pending application
-route.post("/:id/applications/:applicationNo/accept", checkBranchLoggedIn, async (req, res) => {
+route.post("/:id/applications/:applicationNo/approve", checkBranchLoggedIn, async (req, res) => {
     const application = await BranchTrainer.findById(req.params.applicationNo);
 
     // Check if user is the branch owner
