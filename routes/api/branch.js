@@ -5,8 +5,8 @@ const passport = require("passport");
 const { Op } = require("sequelize");
 
 // Requiring branch model
-const { Branch, Customer, Trainer } = require("../../models");
-const { checkBranchLoggedIn, checkCustomerLoggedIn } = require("../../utils/auth");
+const { Branch, Customer, Trainer, Equipment } = require("../../models");
+const { checkBranchLoggedIn, checkTrainerLoggedIn, checkCustomerLoggedIn } = require("../../utils/auth");
 
 
 const authenticateBranch = (req, res, next) => {
@@ -100,6 +100,122 @@ route.put("/:id", checkBranchLoggedIn, async (req, res) => {
 
     } catch (err) {
         console.error(err.stack);
+        res.sendStatus(500);
+    }
+});
+
+// GET route to view equipments of a branch
+route.get("/:id/equipments", checkBranchLoggedIn, async (req, res) => {
+    try {
+        // Check if branch exists
+        const branch = await Branch.findById(req.params.id, {
+            attributes: [],
+            include: {
+                model: Equipment,
+                required: false
+            }
+        });
+
+        if (branch === null)
+            return res.status(404).send({ err: "Branch not found!" });
+
+        // Verifying authority to see branches
+        if (req.params.id != req.user.id) { // Explicit Coersion
+            return res.status(401).send({ err: "Cannot see other Branch's Details!" });
+        }
+
+        // Send the Branch with updated Equipment
+        res.send(branch.get("equipment").map(eq => {
+            eq = eq.dataValues;
+            eq["branch_equipment"] = eq["branch_equipment"].dataValues;
+            return eq;
+        }));
+
+    } catch (err) {
+        console.error(err);
+        res.sendStatus(500);
+    }
+});
+
+// POST route to add and delete an equipment of a branch
+route.post("/:id/equipments", checkBranchLoggedIn, async (req, res) => {
+    try {
+        const { equipmentName, quantity, manufacturer, price, category } = req.body;
+        if (quantity < 0)
+            return res.status(400).send({ err: "Quantity cannot be negative" });
+
+        // Check if branch exists
+        const branch = await Branch.findById(req.params.id, {
+            attributes: ["id"],
+            include: {
+                model: Equipment,
+                where: {
+                    name: equipmentName
+                },
+                required: false
+            }
+        });
+        if (branch === null)
+            return res.status(404).send({ err: "Branch not found!" });
+
+        // Verifying authority to see branches
+        if (req.params.id != req.user.id) { // Explicit Coersion
+            return res.status(401).send({ err: "Cannot modify other Branch's Details!" });
+        }
+
+        // Create the equipment if not found
+        const equipment = await Equipment.findOrCreate({
+            where: { name: equipmentName },
+            defaults: { price, category }
+        });
+
+        // Add or update Equipment to the branch
+        await branch.addEquipment(equipmentName, { through: { quantity, manufacturer, category } });
+
+        // Send the Branch with updated Equipment
+        res.send(await Branch.findById(req.params.id, {
+            attributes: {
+                exclude: ["password"]
+            },
+            include: {
+                model: Equipment,
+                where: {
+                    name: equipmentName
+                },
+                required: false
+            }
+        }));
+
+    } catch (err) {
+        console.error(err);
+        res.sendStatus(500);
+    }
+});
+
+// Route for a Trainer Applying to a branch
+route.post("/:id/apply", checkTrainerLoggedIn, async (req, res) => {
+    try {
+        const branch = await Branch.findById(req.params.id);
+        if (branch === null)
+            return res.status(404).send({ err: "Branch not found!" });
+
+        const trainer = await Trainer.findById(req.user.id, {
+            include: {
+                model: Branch
+            }
+        });
+        const numBranches = trainer.branches.filter(branch => branch["branch_trainer"].status === "APPROVED").length;
+        if (numBranches !== 0) {
+            return res.status(400).send({ err: "Cannot join more than one Branch at a time!" });
+        }
+        
+        await trainer.addBranches(branch, { through: { status: "PENDING" }});
+        const application = await trainer.getBranches({ where: { id: branch.id } });
+        const { createdAt, updatedAt, ...toSend } = application[0]["branch_trainer"].dataValues;
+        res.send(toSend);
+
+    } catch (err) {
+        console.error(err);
         res.sendStatus(500);
     }
 });
