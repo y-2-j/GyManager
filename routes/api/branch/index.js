@@ -5,8 +5,8 @@ const moment = require("moment");
 const { Op } = require("sequelize");
 
 // Requiring branch model
-const { Branch, Customer, Trainer, Allotment, BranchTrainer } = require("../../../models");
-const { checkBranchLoggedIn, checkTrainerLoggedIn, checkCustomerLoggedIn } = require("../../../utils/auth");
+const { Branch } = require("../../../models");
+const { checkBranchLoggedIn } = require("../../../utils/auth");
 
 
 // Retrieve all branches
@@ -69,55 +69,6 @@ route.put("/:id", checkBranchLoggedIn, async (req, res) => {
     }
 });
 
-
-// GET Route to Get Attendance Report for the Branch's Customers of any Date
-// Default Date: Current Date
-route.get("/:id/attendance", checkBranchLoggedIn, async (req, res) => {
-    try {
-        // Check if current branch is same as in parameters
-        if (req.params.id != req.user.id)   // Explicit Coersion
-            return res.status(401).send({ err: "Cannot see other Branch's Details!" });
-
-        // Get Date to find Attendance for
-        let date = null;
-        if (req.query.date)
-            date = moment(req.query.date);
-        else
-            date = moment();
-        
-        // Find the Branch along with Customers, and their allotments for the date
-        const branch = await Branch.findById(req.params.id, {
-            include: [{
-                model: Customer,
-                attributes: ["membershipNo", "name", "preferredTime"],
-                include: [{
-                    model: Allotment,
-                    where: {
-                        branchId: req.params.id,
-                        time: {
-                            [Op.gte]: date.format("YYYY-MM-DD"),
-                            [Op.lt]: date.add(1, 'days').format("YYYY-MM-DD")
-                        }
-                    },
-                    required: false
-                }]
-            }]
-        });
-
-        // Optimize the Result
-        const customers = branch.customers.map(customer => {
-            const { allotments, ...toReturn } = customer.dataValues;
-            return { ...toReturn, allotment: allotments[0] && allotments[0].dataValues }
-        });
-
-        // Send the list of Customers with their Allotment on specified Date
-        res.send(customers);
-
-    } catch (err) {
-        console.error(err);
-        res.sendStatus(500);
-    }
-});
 
 
 // Sub-Routes
