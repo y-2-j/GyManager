@@ -1,8 +1,11 @@
-const route = require("express").Router();
+const route = require("express").Router({ mergeParams: true });
+
+const moment = require("moment");
 
 const { Branch, Customer, Allotment } = require("../../../models");
 const { checkBranchLoggedIn, checkCustomerLoggedIn } = require("../../../utils/auth");
 
+const { Op } = require("sequelize");
 
 // GET all customers of a particular branch
 route.get("/", checkBranchLoggedIn, async (req, res) => {
@@ -91,6 +94,7 @@ const checkAvailability = async (branch) => {
 // GET Route for availability of a branch
 route.get("/availability", async (req, res) => {
     try {
+        console.log(req.params);
         // Check if branch exists
         const branch = await Branch.findById(req.params.id);
         if (branch === null)

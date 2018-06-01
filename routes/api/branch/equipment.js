@@ -1,4 +1,4 @@
-const route = require("express").Router();
+const route = require("express").Router({ mergeParams: true });
 
 const { Branch, Equipment } = require("../../../models");
 const { checkBranchLoggedIn } = require("../../../utils/auth");

@@ -1,9 +1,5 @@
 const route = require("express").Router();
 
-const moment = require("moment");
-
-const { Op } = require("sequelize");
-
 // Requiring branch model
 const { Branch } = require("../../../models");
 const { checkBranchLoggedIn } = require("../../../utils/auth");
