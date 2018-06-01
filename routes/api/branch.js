@@ -240,14 +240,14 @@ const checkAvailability = async (branch) => {
                     [Op.gte]: time + 10000
                 }
             },
-            include: {
+            include: [{
                 model: Customer,
                 required: false,
                 // All Customers attended to at that hour
                 where: {
                     preferredTime: time
                 }
-            }
+            }]
         });
 
         // Find a free trainer
@@ -311,16 +311,15 @@ const getfreeTrainer = async (branch, preferredTime) => {
                 [Op.gte]: preferredTime + 10000
             }
         },
-        include: {
+        include: [{
             model: Customer,
             required: false,
             // All Customers attended to at that hour
             where: {
                 preferredTime
             }
-        }
+        }]
     });
-    console.log(trainers);
 
     // Find a free trainer
     const trainer = trainers.find(trainer => trainer.customers.length < 5);
@@ -341,7 +340,7 @@ const getfreeTrainer = async (branch, preferredTime) => {
 // POST route for customer to join a branch
 route.post("/:id/join", checkCustomerLoggedIn, async (req, res) => {
     try {
-        const preferredTime = parseInt(req.body.preferredTime)
+        const preferredTime = parseInt(req.body.preferredTime) * 10000;
         const branchId = req.params.id;
         const membershipNo = req.user.membershipNo;
 
