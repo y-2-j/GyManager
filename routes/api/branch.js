@@ -3,8 +3,8 @@ const route = require("express").Router();
 const passport = require("passport");
 
 // Requiring branch model
-const { Branch, Equipment } = require("../../models");
-const { checkBranchLoggedIn } = require("../../utils/auth");
+const { Branch, Trainer, Equipment } = require("../../models");
+const { checkBranchLoggedIn, checkTrainerLoggedIn } = require("../../utils/auth");
 
 
 const authenticateBranch = (req, res, next) => {
@@ -189,5 +189,34 @@ route.post("/:id/equipments", checkBranchLoggedIn, async (req, res) => {
         res.sendStatus(500);
     }
 });
+
+// Route for a Trainer Applying to a branch
+route.post("/:id/apply", checkTrainerLoggedIn, async (req, res) => {
+    try {
+        const branch = await Branch.findById(req.params.id);
+        if (branch === null)
+            return res.status(404).send({ err: "Branch not found!" });
+
+        const trainer = await Trainer.findById(req.user.id, {
+            include: {
+                model: Branch
+            }
+        });
+        const numBranches = trainer.branches.filter(branch => branch["branch_trainer"].status === "APPROVED").length;
+        if (numBranches !== 0) {
+            return res.status(400).send({ err: "Cannot join more than one Branch at a time!" });
+        }
+        
+        await trainer.addBranches(branch, { through: { status: "PENDING" }});
+        const application = await trainer.getBranches({ where: { id: branch.id } });
+        const { createdAt, updatedAt, ...toSend } = application[0]["branch_trainer"].dataValues;
+        res.send(toSend);
+
+    } catch (err) {
+        console.error(err);
+        res.sendStatus(500);
+    }
+});
+
 
 module.exports = route;
