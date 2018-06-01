@@ -254,4 +254,28 @@ route.post("/:id/join", checkCustomerLoggedIn, async (req, res) => {
     }
 });
 
+// GET all customers of a particular branch
+route.get("/:id/customers", checkBranchLoggedIn, async (req, res) => {
+    try {
+        // Check if branch exists
+        const branch = await Branch.findById(req.params.id);
+        if (branch === null)
+            return res.status(404).send({ err: "Branch not found!" });
+
+        // Verifying authority to see branches
+        if (req.params.id != req.user.id) { // Explicit Coersion
+            return res.status(401).send({ err: "Cannot view other Branch's Details!" });
+        }
+        const customer = await branch.getCustomers({
+            attributes: { exclude: ["password", "createdAt", "updatedAt"] },
+            raw: true
+        });
+        res.send(customer);
+
+    } catch (err) {
+        console.error(err.stack);
+        res.sendStatus(500);
+    }
+})
+
 module.exports = route;
