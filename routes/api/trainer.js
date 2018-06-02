@@ -91,7 +91,6 @@ route.put("/:id", checkTrainerLoggedIn, async (req, res) => {
     }
 });
 
-<<<<<<< HEAD
 //GET route to see all customers of a trainer
 route.get("/:id/customers", checkTrainerLoggedIn, async (req, res)=>{
     try{
@@ -119,7 +118,6 @@ route.get("/:id/customers", checkTrainerLoggedIn, async (req, res)=>{
         res.sendStatus(500);
     }
 }) 
-=======
 
 // GET Route for all Applications of the Trainer
 route.get("/:id/applications", checkTrainerLoggedIn, async (req, res) => {
@@ -143,6 +141,5 @@ route.get("/:id/applications", checkTrainerLoggedIn, async (req, res) => {
     }
 });
 
->>>>>>> develop
 
 module.exports = route;
