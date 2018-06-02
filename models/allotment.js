@@ -1,6 +1,8 @@
 module.exports = (sequelize, DataTypes) => {
     return sequelize.define("allotment", {
-        startTime: DataTypes.DATE,
-        endTime: DataTypes.DATE
+        time: {
+            type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW
+        }
     });
 };

@@ -6,9 +6,10 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true
         },
         name: DataTypes.STRING,
+        capacity: DataTypes.INTEGER,
         pincode: DataTypes.INTEGER(6),
         address: DataTypes.STRING,
-        phoneNo: DataTypes.INTEGER(10),
+        phoneNo: DataTypes.CHAR(10),
         managerName: DataTypes.STRING,
         password: DataTypes.STRING
     });

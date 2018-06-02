@@ -8,14 +8,8 @@ module.exports = (sequelize, DataTypes) => {
         name: DataTypes.STRING,
         password: DataTypes.STRING,
         salary: DataTypes.INTEGER,
-        startTime: {
-            type: DataTypes.DATEONLY,
-            defaultValue: DataTypes.NOW
-        },
-        endTime: {
-            type: DataTypes.DATEONLY,
-            defaultValue: DataTypes.NOW
-        },
+        startTime: DataTypes.TIME,
+        endTime: DataTypes.TIME,
         experience: DataTypes.INTEGER
     });
 };
