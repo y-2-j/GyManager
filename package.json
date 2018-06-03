@@ -4,7 +4,9 @@
   "description": "A Gym Management System using MySQL Database",
   "main": "app.js",
   "scripts": {
-    "start": "node app"
+    "start": "node app",
+    "build": "node-sass src/styles/style.scss public/css/style.css --output-style compressed",
+    "css:watch": "node-sass -w src/styles/style.scss public/css/style.css"
   },
   "repository": {
     "type": "git",
@@ -22,6 +24,7 @@
     "lorem-ipsum": "^1.0.4",
     "moment": "^2.22.2",
     "mysql2": "^1.5.3",
+    "node-sass": "^4.9.0",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "sequelize": "^4.37.10"
