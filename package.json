@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node app",
     "build": "node-sass src/styles/style.scss public/css/style.css --output-style compressed",
-    "css:watch": "node-sass -w src/styles/style.scss public/css/style.css"
+    "css:watch": "node-sass -w src/styles/style.scss -o public/css"
   },
   "repository": {
     "type": "git",

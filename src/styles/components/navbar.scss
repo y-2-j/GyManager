@@ -1,0 +1,14 @@
+.navbar {
+    padding: 0.3rem;
+    padding-left: 5rem;
+    background-color: black;
+    color: #4c3a8d;
+
+    a {
+        text-decoration: none;
+
+        &:hover {
+            color: lighten(#4c3a8d, 30%);
+        }
+    }
+}
