@@ -5,8 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "node app",
-    "build": "node-sass src/styles/style.scss public/css/style.css --output-style compressed",
-    "css:watch": "node-sass -w src/styles/style.scss -o public/css"
+    "build": "gulp sass",
+    "sass:watch": "gulp sass:watch"
   },
   "repository": {
     "type": "git",
@@ -24,9 +24,12 @@
     "lorem-ipsum": "^1.0.4",
     "moment": "^2.22.2",
     "mysql2": "^1.5.3",
-    "node-sass": "^4.9.0",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "sequelize": "^4.37.10"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-sass": "^4.0.1"
   }
 }
