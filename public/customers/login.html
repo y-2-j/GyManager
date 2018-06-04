@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>GyManager</title>
+    <title>Customer Login</title>
 
     <link rel="stylesheet" href="/css/style.css">
 
@@ -29,6 +29,21 @@
         <!-- Close Button -->
         <div class="menu__close-btn">
             <i class="fa fa-times"></i>
+        </div>
+    </div>
+    
+    <div class="login-container">
+        <h1 class="header">
+            Login
+        </h1>
+        <form class="login-form" action="/customers/login" method="POST">
+            <input type="text" class="membershipNo form-field" name="membershipNo" placeholder="Membership Number">
+            <input type="password" class="password form-field" name="password" placeholder="Password">
+            <button type="submit" class="submit-btn">Login</button>
+        </form>
+        <div class="signup-btn">
+            New to GyManager ?
+            <a href="#">Sign Up</a>
         </div>
     </div>
 
