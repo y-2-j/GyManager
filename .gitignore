@@ -1,3 +1,4 @@
 node_modules/
 secret.json
 .vscode/
+public/css/style.css
