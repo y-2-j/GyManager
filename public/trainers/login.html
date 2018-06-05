@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Customer Login</title>
+    <title>Trainer Login</title>
 
     <link rel="stylesheet" href="/css/style.css">
 
@@ -34,10 +34,10 @@
     
     <div class="login-container">
         <h1 class="header">
-            Customer Login
+            Trainer Login
         </h1>
-        <form class="login-form" action="/customers/login" method="POST">
-            <input type="text" class="membershipNo form-field" name="membershipNo" placeholder="Membership Number" required>
+        <form class="login-form" action="/trainers/login" method="POST">
+            <input type="text" class="id form-field" name="id" placeholder="Trainer ID" required>
             <input type="password" class="password form-field" name="password" placeholder="Password" required>
             <button type="submit" class="submit-btn">Login</button>
         </form>
@@ -48,14 +48,16 @@
     </div>
     <div class="signup-container">
         <h1 class="header">
-            Customer Signup
+            Trainer Signup
         </h1>
-        <form class="signup-form" action="/customers/signup" method="POST">
+        <form class="signup-form" action="/trainers/signup" method="POST">
             <input type="text" class="name form-field" name="name" placeholder="Name" required>
-            <input type="number" class="age form-field" name="age" placeholder="Age required">
-            <input type="number" class="height form-field" name="height" placeholder="Height(in cms)" required>
-            <input type="number" class="weight form-field" name="weight" placeholder="Weight(in Kgs)" required>
-            <input type="password" class="password form-field" name="password" placeholder="Password" required>            
+            <input type="password" class="password form-field" name="password" placeholder="Password" required>
+            <input type="number" class="experience form-field" name="experience" placeholder="Experience(in years)">
+            <label for="timings">Timings</label>
+            <input type="time" class="form-field timings" name="startTime" placeholder="Start Time" required>
+            <span class="arrow"><i class="fa fa-arrow-right"></i></span>
+            <input type="time" class="form-field timings" name="endTime" placeholder="End Time" required>                      
             <button type="submit" class="submit-btn">Sign up</button>
         </form>
         <div class="login-btn">
