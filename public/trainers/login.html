@@ -10,6 +10,7 @@
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="/js/common.js"></script>
+    <script src="/js/loginsignup.js"></script>
 </head>
 <body>
     <!-- Navbar -->
@@ -36,7 +37,7 @@
         <h1 class="header">
             Trainer Login
         </h1>
-        <form class="login-form" action="/trainers/login" method="POST">
+        <form class="login-form" action="/api/trainers/login" method="POST">
             <input type="text" class="id form-field" name="id" placeholder="Trainer ID" required>
             <input type="password" class="password form-field" name="password" placeholder="Password" required>
             <button type="submit" class="submit-btn">Login</button>
@@ -50,7 +51,7 @@
         <h1 class="header">
             Trainer Signup
         </h1>
-        <form class="signup-form" action="/trainers/signup" method="POST">
+        <form class="signup-form" action="/api/trainers/signup" method="POST">
             <input type="text" class="name form-field" name="name" placeholder="Name" required>
             <input type="password" class="password form-field" name="password" placeholder="Password" required>
             <input type="number" class="experience form-field" name="experience" placeholder="Experience(in years)">

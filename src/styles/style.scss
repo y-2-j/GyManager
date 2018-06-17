@@ -3,13 +3,10 @@
 
 @import './base/base';
 
-body{
-    background-image: linear-gradient(45deg,#4c3a8d , lighten(#4c3a8d, 30%));
-    background-size: cover;
-    height: 100vh;
-}
-
 @import './components/logo-button';
+@import './components/inputs';
 @import './components/navbar';
 @import './components/menu';
-@import './components/login-signup.scss';
+@import './components/login-signup';
+@import './components/front-page';
+@import './components/buttons';
