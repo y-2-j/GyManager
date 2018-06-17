@@ -1,0 +1,142 @@
+.page-heading{
+    position: relative;
+    background-image: url("/images/branch.jpg");
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 36rem;
+    width: 100%;
+    
+    &__name{
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        position: absolute;
+        bottom: 0;
+        padding: 0.5rem 1rem;
+        margin: 1rem;
+        background-color: aliceblue;
+    }
+}
+
+.btn{
+    margin: 2rem 4rem;
+    cursor: pointer;
+    padding:0.4rem 0.8rem;
+    font-size: 3rem;
+    box-shadow: 0 4px 8px 0 grey;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;            
+    color: darkcyan;
+    border-radius: 1rem;
+    border: none;
+    background-color: honeydew;
+}
+
+.apply-btn-container{
+    text-align: right;
+}
+.btn:hover{
+    box-shadow: 0 6px 10px 0 black;
+    transform: translate(-2px, -2px);            
+}
+.edit-btn{
+    margin: 1.5rem auto;
+    font-size: 2.5rem;
+}
+.outer-container{
+    margin: 0 3rem 5rem 3rem;
+    padding: 3rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    .side-bar{
+        flex: 25%;
+        background-color: lightcyan;
+        padding: 2rem;
+        margin: 1rem;
+        height: max-content;
+        &__title{
+            color: coral;
+            margin: 1.5rem auto;
+            font-size: 3rem;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; 
+        }
+        &__subtitle{
+            position: relative;
+            margin: 1.2rem auto;
+            font-size: 2rem;
+            color: blueviolet;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; 
+        }
+        &__pincode{
+            color: darkcyan
+        }
+        &__details{
+            display: flex;
+            justify-content: space-between;
+            margin: 3rem auto 1.5rem;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-size: 2rem;
+        }
+    }
+    .main-content{
+        flex: 60%;
+        background-color: lightcyan;
+        padding: 2rem;
+        margin: 1rem;
+        &__description{
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-size: 1.8rem;
+            color: darkblue;
+        }
+        .equipments{
+            margin: 2rem auto;
+            padding: 1rem;
+            background-image: url("/images/equips.jpg");
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: rgba(255, 255, 255, 0.2);
+            background-size: cover;
+            cursor: pointer;
+            &__title{
+                font-size: 3rem;
+                color: blueviolet;
+                font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; 
+            }
+        }
+        .equips{
+            display: flex;
+            flex-wrap: wrap;
+            // visibility: hidden;
+            justify-content: space-around;
+            &__item{
+                background-color: aquamarine;
+                border-radius: 1rem;
+                margin: 1rem 5rem;
+                padding: 1rem;
+                z-index: 3;
+                opacity: 0;
+                // flex: 30%;
+            }
+        }
+        .stats{
+            margin: 2rem auto;
+            padding: 1rem;
+            border-top: 0.3rem solid grey;
+            &__title{
+                margin: 1rem auto 2rem;
+                font-size: 3rem;
+                color: blueviolet;
+                font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            }
+            &__number{
+                padding: 1rem;
+                color: white;
+                background-color: purple;
+                margin: auto;
+                border-radius: 0.8rem;
+                font-size: 2rem;
+            }
+        }
+    }
+}
