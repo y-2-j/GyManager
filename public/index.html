@@ -9,7 +9,13 @@
     <link rel="stylesheet" href="/css/style.css">
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+    </script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBAqfExut-Ft-Ov4zMFLfT2GXP2pQtN0cU&callback=initMap">
+    </script>
     <script src="/js/common.js"></script>
+    <script src="/js/front-page.js"></script>
 </head>
 <body>
     <!-- Navbar -->
@@ -31,6 +37,118 @@
             <i class="fa fa-times"></i>
         </div>
     </div>
+    
+    <!-- LANDING SECTION -->
+    <div class="landing-section">
+        <h1 class="landing-section__title">GyManager</h1>
+        <h3 class="landing-section__subtitle">A Complete tool to simplify your Gym Life.</h3>
+    </div>
+
+    <!-- FEATURES SECTION -->
+    <div class="section">
+        <h1 class="section__title">Features</h1>
+        <div class="roles">
+            <div class="feature">
+                <img src="http://via.placeholder.com/200x200" alt="Feature">
+                <h3 class="feature__title">Customer</h3>
+                <ul class="feature__list">
+                    <li><i class="fa fa-check"></i> Join a Branch</li>
+                    <li><i class="fa fa-check"></i> Know your Trainer</li>
+                    <li><i class="fa fa-check"></i> Track Attendance</li>
+                </ul>
+            </div>
+            <div class="feature">
+                <img src="http://via.placeholder.com/200x200" alt="Feature">
+                <h3 class="feature__title">Trainer</h3>
+                <ul class="feature__list">
+                    <li><i class="fa fa-check"></i> Apply to different branches</li>
+                    <li><i class="fa fa-check"></i> Track Applications</li>
+                    <li><i class="fa fa-check"></i> Know your Customers</li>
+                </ul>
+            </div>
+            <div class="feature">
+                <img src="http://via.placeholder.com/200x200" alt="Feature">
+                <h3 class="feature__title">Manager</h3>
+                <ul class="feature__list">
+                    <li><i class="fa fa-check"></i> Approve Trainer Applications</li>
+                    <li><i class="fa fa-check"></i> Update Customer Attendance</li>
+                    <li><i class="fa fa-check"></i> Manage Gym Equipments</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- TESTIMONIALS SECTION -->
+    <div class="section">
+        <h1 class="section__title">Testimonials</h1>
+        <div class="testimonial__container">
+            <div class="testimonial__customer">
+                <div class="testimonial__text">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque numquam assumenda quo sint explicabo blanditiis recusandae, cupiditate dolores fugit nam.
+                </div>
+                <div class="testimonial__author">
+                    <img class="testimonial__author-img" src="https://via.placeholder.com/200x200">
+                    <h2>Kartik</h2>
+                    <h3>(Customer)</h3>
+                </div>
+            </div>
+            <div class="testimonial__trainer">
+                <div class="testimonial__author">
+                    <img class="testimonial__author-img" src="https://via.placeholder.com/200x200">
+                    <h2>Anuj</h2>
+                    <h3>(Trainer)</h3>
+                </div>
+                <div class="testimonial__text">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque numquam assumenda quo sint explicabo blanditiis recusandae, cupiditate dolores fugit nam.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTACT US SECTION -->
+    <div class="section">
+        <h1 class="section__title">Contact Us</h1>
+        <div class="contact-us-container">
+            <div class="location">
+                <div id="map"></div>
+            </div>
+            <div class="contact-form-container">
+                <form class="contact-form">
+                    <input class="form-field" type="text" name="name" placeholder="Name">
+                    <input class="form-field" type="email" name="email" placeholder="Email address">
+                    <textarea class="form-field" name="message" cols="30" rows="10" placeholder="Your message here"></textarea>
+                    <button class="btn btn--blue">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="social-links">
+            <h3 class="footer__title">Find Us on Social Platforms :</h3>
+            <a href=""><i class="fa fa-github"></i></a>
+            <a href=""><i class="fa fa-facebook-official"></i></a>
+            <a href=""><i class="fa fa-twitter"></i></a>
+            <a href=""><i class="fa fa-google-plus"></i></a>
+        </div>
+        <div class="developers">
+            <h3 class="footer__title">Developers</h3>
+            <h4 class="developers__name">
+                Anuj Aggarwal
+                <a class="developers__link" href="https://github.com/anuj-aggarwal/" target="_blank"><i class="fa fa-github"></i></a>
+                <a class="developers__link" href="https://www.facebook.com/anuj.aggarwal.39794" target="_blank"><i class="fa fa-facebook-official"></i></a>
+                <a class="developers__link" href="https://www.linkedin.com/in/anuj-aggarwal/" target="_blank"><i class="fa fa-linkedin-square"></i></a>
+                <a class="developers__link" href="mailto:anuj.aggarwal63@gmail.com"><i class="fa fa-envelope"></i></a>
+            </h4>
+            <h4 class="developers__name">
+                Kartik Narula
+                <a class="developers__link" href="https://github.com/y-2-j" target="_blank"><i class="fa fa-github"></i></a>
+                <a class="developers__link" href="https://www.facebook.com/narulakartik" target="_blank"><i class="fa fa-facebook-official"></i></a>
+                <a class="developers__link" href="https://www.linkedin.com/in/kartik-narula-1ab57a136/" target="_blank"><i class="fa fa-linkedin-square"></i></a>
+                <a class="developers__link" href="mailto:kartiknarula27@gmail.com"><i class="fa fa-envelope"></i></a>
+            </h4>
+        </div>
+    </footer>
 
 </body>
 </html>

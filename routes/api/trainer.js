@@ -27,8 +27,6 @@ route.post("/signup", async (req, res, next) => {
     try {
         const { name, password } = req.body;
         let { startTime, endTime } = req.body;
-        startTime *= 10000;
-        endTime *= 10000;
 
         const experience = req.body.experience || undefined;
 

@@ -10,6 +10,8 @@
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="/js/common.js"></script>
+    <script src="/js/loginsignup.js"></script>
+
 </head>
 <body>
     <!-- Navbar -->
@@ -36,7 +38,7 @@
         <h1 class="header">
             Customer Login
         </h1>
-        <form class="login-form" action="/customers/login" method="POST">
+        <form class="login-form" action="/api/customers/login" method="POST">
             <input type="text" class="membershipNo form-field" name="membershipNo" placeholder="Membership Number" required>
             <input type="password" class="password form-field" name="password" placeholder="Password" required>
             <button type="submit" class="submit-btn">Login</button>
@@ -50,7 +52,7 @@
         <h1 class="header">
             Customer Signup
         </h1>
-        <form class="signup-form" action="/customers/signup" method="POST">
+        <form class="signup-form" action="/api/customers/signup" method="POST">
             <input type="text" class="name form-field" name="name" placeholder="Name" required>
             <input type="number" class="age form-field" name="age" placeholder="Age required">
             <input type="number" class="height form-field" name="height" placeholder="Height(in cms)" required>
