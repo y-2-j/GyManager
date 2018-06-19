@@ -29,6 +29,10 @@
         border-radius: 2rem;
         &__btn-container{
             text-align: right;
+
+            .btn {
+                font-size: 2rem;
+            }
         }
         &__title{
             margin: 0;
@@ -52,22 +56,5 @@
         &__manager-name{
             font-size: 2rem;
         }
-        &__btn{
-            margin: 0;
-            cursor: pointer;
-            padding:0.4rem 0.8rem;
-            font-size: 2rem;
-            box-shadow: 0 4px 8px 0 grey;
-            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;            
-            color: darkcyan;
-            border-radius: 1rem;
-            border: none;
-            background-color: honeydew;
-        }
-        &__btn:hover{
-            box-shadow: none;
-            transform: translate(-2px, -2px);            
-        }
-
     }
 }
