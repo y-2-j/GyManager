@@ -92,11 +92,10 @@
             margin: 2rem auto;
             padding: 1rem;
             background-image: url("/images/equips.jpg");
-            background-attachment: fixed;
-            background-position: center;
+            background-position: 50% 0;
             background-repeat: no-repeat;
             background-color: rgba(255, 255, 255, 0.2);
-            background-size: cover;
+            background-size: 100% 130%;
             cursor: pointer;
             &__title{
                 font-size: 3rem;
@@ -112,7 +111,7 @@
             &__item{
                 background-color: aquamarine;
                 border-radius: 1rem;
-                margin: 1rem 5rem;
+                margin: 1rem 7rem;
                 padding: 1rem;
                 z-index: 3;
                 opacity: 0;

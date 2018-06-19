@@ -8,24 +8,16 @@ $(()=>{
         // $equipments.animate({opacity:0.5}, 100);
         $equips.animate({opacity:1}, 100);
     });
-    let displayed=false;
-    $stats.mouseenter(()=>{
-        if(!displayed){
+    
+    const $statsTitle = $stats.find(".stats__title");
+    $(window).scroll((event)=> {
+        if ($(window).scrollTop() + $(window).height() >= $statsTitle.position().top){
             countUp(15, $trainer);
             countUp(84, $customer);
-            displayed=true;
+            $(window).off("scroll");
         }
     });
 
-});
-
-const sleep= ((milliseconds) => {
-    var start = new Date().getTime();
-    for (var i = 0; i < 1e7; i++) {
-      if ((new Date().getTime() - start) > milliseconds){
-        break;
-      }
-    }
 });
 
 const countUp = ((num, element)=>{  
@@ -35,5 +27,5 @@ const countUp = ((num, element)=>{
         element.html(i);
         if(i==num)
             clearInterval(x);
-    }, 20);
+    }, 2000/num);
 });
