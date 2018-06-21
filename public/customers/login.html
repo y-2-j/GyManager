@@ -23,10 +23,28 @@
     <!-- Menu -->
     <div class="menu">
         <!-- Links -->
-        <ul class="menu__contents">
-            <li><a href="#" class="menu__link">HOME</a></li>
+        <ul id="public-menu" class="menu__contents" style="display: none">
+            <li><a href="/" class="menu__link">HOME</a></li>
             <li><a href="#" class="menu__link">ABOUT US</a></li>
-            <li><a href="#" class="menu__link">LOGIN/SIGNUP</a></li>
+            <li><a href="/customers/login" class="menu__link">CUSTOMER LOGIN</a></li>
+            <li><a href="/trainers/login" class="menu__link">TRAINER LOGIN</a></li>            
+        </ul>
+
+        <!-- User is Trainer -->
+        <ul id="trainer-menu" class="menu__contents" style="display: none">
+            <li><a href="/" class="menu__link">HOME</a></li>
+            <li><a href="/trainers/profile" class="menu__link">PROFILE</a></li>
+            <li><a href="/branches" class="menu__link">BRANCHES</a></li>
+            <li><a href="/api/logout" class="menu__link">LOGOUT</a></li>            
+        </ul>
+
+        <!-- User is Customer -->
+        <ul id="customer-menu" class="menu__contents" style="display: none">
+            <li><a href="/" class="menu__link">HOME</a></li>
+            <li><a href="/customers/profile" class="menu__link">PROFILE</a></li>
+            <li><a href="/customers/attendance" class="menu__link">ATTENDANCE</a></li>
+            <li><a href="/branches" class="menu__link">BRANCHES</a></li>                        
+            <li><a href="/api/logout" class="menu__link">LOGOUT</a></li>
         </ul>
         <!-- Close Button -->
         <div class="menu__close-btn">
