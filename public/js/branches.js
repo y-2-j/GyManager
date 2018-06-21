@@ -19,7 +19,7 @@ const getBranches = () => {
 };
 
 const getBranchHtml = (branch) => {
-    return $(`
+    return `
         <div data-id="${branch.id}" class="branch-container">
             <img src="/images/temp.jpg">
             <div class="details">
@@ -35,5 +35,5 @@ const getBranchHtml = (branch) => {
                 </div>
             </div>
         </div>  
-    `);
+    `;
 }
