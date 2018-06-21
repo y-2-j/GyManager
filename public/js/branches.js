@@ -1,4 +1,5 @@
 $(async () => {
+    fetchUser();
     let branches = [];
 
     const $mainContainer = $(".main-container");
@@ -27,7 +28,7 @@ const getBranchHtml = (branch) => {
                 <h4 class="details__address">${branch.address}</h4>
                 <p class="details__text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Et fugiat eius laudantium consectetur distinctio! Quis sequi consequatur atque assumenda non, nihil laudantium, provident ratione, nesciunt facilis voluptas! Ad, facilis eaque.</p>
                 <div class="details__contact">
-                    <span class="manager">Manager: ${branch.owner}</span>
+                    <span class="manager">Manager: ${branch.managerName}</span>
                     <span class="phone">Contact No: ${branch.phoneNo}</span>
                 </div>
                 <div class="details__btn-container">

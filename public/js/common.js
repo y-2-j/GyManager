@@ -1,6 +1,4 @@
-let user = null;
-
-$(async () => {
+$(() => {
     const $menu = $(".menu");
     const $logoBtn = $(".logo-button");
     const $closeBtn = $(".menu__close-btn");
@@ -12,13 +10,11 @@ $(async () => {
     $closeBtn.click(() => {
         $menu.hide(200);
     });
-
-    user = await fetchUser();
 });
 
 // Fetch user from Database and display Menu
 const fetchUser = async () => {
-    const user = await $.get("/user");
+    const user = await $.get("/user") || null;
     
     // Not Logged In
     if (user === null) {

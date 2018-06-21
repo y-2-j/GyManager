@@ -1,8 +1,19 @@
-$(() => {
+$(async () => {
+    const user = await fetchUser();
+
     const branch = JSON.parse(localStorage.getItem("branch"));
     $(".outer-container").append(getBranchHtml(branch));
     $(".page-heading__name").html(branch.name);
-    
+
+
+    const $applyBtnContainer = $(".apply-btn-container");
+    if (user === null)
+        $applyBtnContainer.hide();
+    else if (user.type === "trainer")
+        $applyBtnContainer.find(".apply-btn").html("Apply");
+    else if (user.type === "customer")
+        $applyBtnContainer.find(".apply-btn").html("Join");
+
     const $equipments = $('.equipments');
     const $equips = $('.equips__item');
     const $trainer = $('#trainer');
@@ -32,9 +43,8 @@ const getBranchHtml = (branch) => {
             <h5 class="side-bar__subtitle side-bar__pincode">${branch.pincode}</h5>
             <div class="side-bar__details">
                 <p>Manager: ${branch.managerName}</p>
-                <p>${branch.phoneNo}</p>
-            </div>          
-            <button class="btn btn-primary edit-btn">Edit Details</button>
+                <p>Contact No: ${branch.phoneNo}</p>
+            </div>
         </div>
         <div class="main-content">
             <div class="main-content__description">

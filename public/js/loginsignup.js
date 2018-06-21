@@ -1,4 +1,6 @@
 $(() => {
+    fetchUser();
+    
     const $loginContainer = $(".login-container");
     const $signupContainer = $(".signup-container");
     const $loginBtn =$(".login-btn");
