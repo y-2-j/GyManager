@@ -8,7 +8,7 @@ const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
 //Requiring customer model
-const { Customer, Branch, Allotment } = require("../../models");
+const { Customer, Branch, Trainer, Allotment } = require("../../models");
 const { checkBranchLoggedIn, checkCustomerLoggedIn } = require("../../utils/auth");
 
 // HELPERS
@@ -55,10 +55,19 @@ route.get("/:membershipNo", checkCustomerLoggedIn, async (req, res) => {
         }
 
         const attributes = { exclude: ["password", "createdAt", "updatedAt"] };
-        const customer = await Customer.findById(req.params.membershipNo, { attributes, raw: true });
+        const customer = await Customer.findById(req.params.membershipNo, {
+            include: [{
+                model: Branch,
+                attributes: ["id", "name", "phoneNo"]
+            }, {
+                model: Trainer,
+                attributes: ["id", "name", "startTime", "endTime"]
+            }],
+            attributes
+        });
         if (customer === null)
             return res.status(404).send({ err: "Customer not found!" });
-        
+
         res.send(customer);
 
     } catch (err) {
