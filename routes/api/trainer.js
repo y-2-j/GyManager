@@ -2,7 +2,7 @@ const route = require("express").Router();
 
 const passport = require("passport");
 
-const { Trainer, Customer, Branch } = require("../../models");
+const { Trainer, Customer, Branch, BranchTrainer } = require("../../models");
 const { checkTrainerLoggedIn } = require("../../utils/auth");
 
 
@@ -50,15 +50,24 @@ route.post("/login", authenticateTrainer);
 // GET Route for a single Trainer
 route.get("/:id", async (req, res) => {
     try {
-        const attributes = ["id", "name", "startTime", "endTime", "experience", "branchId"];
+        const attributes = ["id", "name", "startTime", "endTime", "experience"];
         if (req.user && req.user.id == req.params.id) { // Explicit coersion of id in user to string
             attributes.push("salary");
         }
 
-        const trainer = await Trainer.findById(req.params.id, { attributes, raw: true });
+        const trainer = await Trainer.findById(req.params.id, {
+            attributes,
+            include: [{
+                model: Branch,
+                attributes: ["id", "name", "phoneNo"]
+            }, {
+                model: Customer,
+                attributes: ["membershipNo", "name", "preferredTime"]
+            }]
+        });
         if (trainer === null)
             return res.status(404).send({ err: "Trainer not found!" });
-        
+
         res.send(trainer);
 
     } catch (err) {
