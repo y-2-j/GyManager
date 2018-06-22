@@ -43,9 +43,20 @@
         margin: 2rem;
     }
 
-    .trainer__details {
+    .trainer__details, .customer__details, .applications {
         margin: 2rem;
         padding: 2rem;
         background-color: #ccc;
+    }
+
+    .customers-list, .applications-list {
+        display: flex;
+        flex-direction: column;
+        padding: 0 2rem;
+
+        &__item {
+            display: flex;
+            justify-content: space-between;
+        }
     }
 }
