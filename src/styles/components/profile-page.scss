@@ -1,0 +1,51 @@
+.main-container {
+    margin: 2rem;
+    display: flex;
+}
+
+.details__container {
+    padding: 2rem;
+    flex-basis: 60%;
+    margin-right: 2rem;
+    background-color: #aaa;
+    border-radius: 5px;
+}
+
+.details__header {
+    display: flex;
+    padding: 2rem;
+    justify-content: space-around;
+
+    img {
+        height: 15rem;
+        width: 15rem;
+    }
+
+    .name-container {
+        display: flex;
+        justify-content: space-around;
+        flex-direction: column;
+    }
+
+    h2 {
+        margin: 0;
+        font-size: 5rem;
+    }
+}
+
+.sidebar {
+    background-color: #eee;
+    flex-basis: 40%;
+
+    .branch__details {
+        background-color: #ccc;
+        padding: 2rem;
+        margin: 2rem;
+    }
+
+    .trainer__details {
+        margin: 2rem;
+        padding: 2rem;
+        background-color: #ccc;
+    }
+}
