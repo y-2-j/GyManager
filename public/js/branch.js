@@ -9,33 +9,59 @@ $(async () => {
     const $applyBtnContainer = $(".apply-join-btn-container");
     const $applyBtn = $applyBtnContainer.find(".apply-btn");
     const $joinBtn = $applyBtnContainer.find(".join-btn");
+    const $preferredTime = $applyBtnContainer.find(".preferred-time");
 
     if (user === null || user.branchId)
         $applyBtnContainer.hide();
-    else if (user.type === "trainer"){
+    else if (user.type === "trainer") {
         const trainer = await $.get(`/api/trainers/${user.id}`);
         trainer.branch = trainer.branches.find(({ branch_trainer }) => branch_trainer.status == "APPROVED");
         if (!trainer.branch) {
             $joinBtn.hide();
+            $preferredTime.hide();
             $applyBtn.show();
             $applyBtnContainer.show();
         }
     }
-    else if (user.type === "customer"){
+    else if (user.type === "customer") {
         const customer = await $.get(`/api/customers/${user.membershipNo}`);
-        if(!customer.branch){
+        if (!customer.branch) {
             $applyBtn.hide();
+            $preferredTime.show();
             $joinBtn.show();
             $applyBtnContainer.show();
         }
     }
 
-    $applyBtn.click(()=>{
+    $applyBtn.click(() => {
         $.post(`/api/branches/${branch.id}/trainers/apply`)
-         .then(data => console.log(data))
-         .catch(err => {
-             console.log(err);
-         })
+            .then(data => {
+                alert("Your application has been received");
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    });
+
+    $joinBtn.click(async () => {
+        try {
+            const time = parseInt($preferredTime.val().slice(0, 2));
+            const availability = await $.get(`/api/branches/${branch.id}/customers/availability`);
+            if (!availability[time]) {
+                alert("Branch not available at this time");
+            }
+            else {
+                await $.post(`/api/branches/${branch.id}/customers/join`, {
+                    preferredTime: time
+                });
+                alert("Branch joined successfully");
+                window.location = "/profile";
+            }
+        } catch (err) {
+            console.error(err);
+            alert("Oops, something went wrong!");
+        }
+
     });
 
     const $equipments = $('.equipments');
