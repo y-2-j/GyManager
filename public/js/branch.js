@@ -6,13 +6,37 @@ $(async () => {
     $(".page-heading__name").html(branch.name);
 
 
-    const $applyBtnContainer = $(".apply-btn-container");
-    if (user === null)
+    const $applyBtnContainer = $(".apply-join-btn-container");
+    const $applyBtn = $applyBtnContainer.find(".apply-btn");
+    const $joinBtn = $applyBtnContainer.find(".join-btn");
+
+    if (user === null || user.branchId)
         $applyBtnContainer.hide();
-    else if (user.type === "trainer")
-        $applyBtnContainer.find(".apply-btn").html("Apply");
-    else if (user.type === "customer")
-        $applyBtnContainer.find(".apply-btn").html("Join");
+    else if (user.type === "trainer"){
+        const trainer = await $.get(`/api/trainers/${user.id}`);
+        trainer.branch = trainer.branches.find(({ branch_trainer }) => branch_trainer.status == "APPROVED");
+        if (!trainer.branch) {
+            $joinBtn.hide();
+            $applyBtn.show();
+            $applyBtnContainer.show();
+        }
+    }
+    else if (user.type === "customer"){
+        const customer = await $.get(`/api/customers/${user.membershipNo}`);
+        if(!customer.branch){
+            $applyBtn.hide();
+            $joinBtn.show();
+            $applyBtnContainer.show();
+        }
+    }
+
+    $applyBtn.click(()=>{
+        $.post(`/api/branches/${branch.id}/trainers/apply`)
+         .then(data => console.log(data))
+         .catch(err => {
+             console.log(err);
+         })
+    });
 
     const $equipments = $('.equipments');
     const $equips = $('.equips__item');
