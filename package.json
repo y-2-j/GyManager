@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node app",
     "build": "gulp sass",
-    "sass:watch": "gulp sass:watch"
+    "sass:watch": "gulp sass:watch",
+    "preinstall": "npm run build"
   },
   "repository": {
     "type": "git",
