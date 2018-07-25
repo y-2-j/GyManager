@@ -1,0 +1,23 @@
+.btn {
+    cursor: pointer;
+    border-radius: 1rem;
+    border: none;
+    padding: 0.4rem 0.8rem;
+}
+
+.btn-primary {
+    background-color: honeydew;
+    font-size: 3rem;
+    box-shadow: 0 2px 8px 0 grey;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;            
+    color: darkcyan;
+}
+
+.btn-primary:hover {
+    box-shadow: 2px 4px 8px 0 grey;
+    transform: translate(-2px, -2px);            
+}
+
+.btn--blue {
+    background-color: lightblue;
+}

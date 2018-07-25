@@ -1,0 +1,62 @@
+.login-container, .signup-container{
+    width: 25%;
+    min-width: 25rem;
+    margin: 5% auto;
+    text-align: center;
+    background-color: black;
+    padding: 2rem 6rem;
+    border-radius: 1rem;
+
+    .arrow{
+        font-size: 2rem;
+        display: inline-block;
+        color: white;
+    }
+    .timings{
+        margin: 1rem 0.6rem;
+        border-radius: 0.5rem;
+        padding: 0.8rem 1rem;
+        border: none;
+        display: inline-block;
+        width: 30%;
+        letter-spacing: 0.7rem;
+        font-size: 1.5rem;
+    }
+    label{
+        color: aliceblue;
+        display: block;
+        // text-align: left;
+        padding-left: 1.6rem;
+    }
+    .header{
+        color: aliceblue;
+        margin-bottom: 3rem;
+    }
+    .submit-btn {
+        margin: 2rem auto;        
+        width: 90%;
+        padding: 1rem;
+        font-size: 2.4rem;
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: #4c3a8d;
+        border: 1px solid lighten(#4c3a8d, 30%);
+        color: white;
+        box-shadow: 2px 2px 2px #4c3a8d;
+
+        &:hover{
+            transform: translate(-2px, -2px);
+            box-shadow: 4px 4px 2px #4c3a8d;
+            cursor: pointer;
+        }
+    }
+    .signup-btn, .login-btn{
+        color: aliceblue;
+        a{
+            color: lighten(#4c3a8d, 30%);
+        }
+    }
+}
+
+.signup-container{
+    display: none;
+}

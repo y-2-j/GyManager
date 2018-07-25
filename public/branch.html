@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>GyManager</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="/js/branch.js"></script>
+    <script src="/js/common.js"></script>
+</head>
+<body>
+    <!-- Navbar -->
+    <button class="logo-button"><i class="fa fa-bars"></i></button>
+
+    <!-- Menu -->
+    <div class="menu">
+        <!-- Links -->
+        <ul id="public-menu" class="menu__contents" style="display: none">
+            <li><a href="/" class="menu__link">HOME</a></li>
+            <li><a href="#" class="menu__link">ABOUT US</a></li>
+            <li><a href="/customers/login" class="menu__link">CUSTOMER LOGIN</a></li>
+            <li><a href="/trainers/login" class="menu__link">TRAINER LOGIN</a></li>            
+        </ul>
+
+        <!-- User is Trainer -->
+        <ul id="trainer-menu" class="menu__contents" style="display: none">
+            <li><a href="/" class="menu__link">HOME</a></li>
+            <li><a href="/trainers/profile" class="menu__link">PROFILE</a></li>
+            <li><a href="/branches" class="menu__link">BRANCHES</a></li>
+            <li><a href="/api/logout" class="menu__link">LOGOUT</a></li>            
+        </ul>
+
+        <!-- User is Customer -->
+        <ul id="customer-menu" class="menu__contents" style="display: none">
+            <li><a href="/" class="menu__link">HOME</a></li>
+            <li><a href="/customers/profile" class="menu__link">PROFILE</a></li>
+            <li><a href="/customers/attendance" class="menu__link">ATTENDANCE</a></li>
+            <li><a href="/branches" class="menu__link">BRANCHES</a></li>                        
+            <li><a href="/api/logout" class="menu__link">LOGOUT</a></li>
+        </ul>
+        <!-- Close Button -->
+        <div class="menu__close-btn">
+            <i class="fa fa-times"></i>
+        </div>
+    </div>
+
+    <div class="page-heading">
+        <h1 class="page-heading__name"></h1>
+    </div>
+
+    <div class="apply-join-btn-container" style="display:none">
+        <button class="btn btn-primary apply-btn">
+            Apply
+        </button>
+        <input class="preferred-time" type="time">
+        <button class="btn btn-primary join-btn">
+            Join
+        </button>
+    </div>
+
+    <div class="outer-container">
+        <!-- Branch Details will be added by Script -->
+    </div>
+</body>
+</html>

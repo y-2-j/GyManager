@@ -25,6 +25,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
+// Serve the Frontend
+app.use(express.static(path.join(__dirname, "public"), { extensions: ["html"] }));
+
 // ROUTES
 app.use("/", require("./routes"));
 

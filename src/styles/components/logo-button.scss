@@ -1,0 +1,14 @@
+.logo-button {
+    border-radius: 50%;
+    padding: 0.8rem 1.3rem;
+    background-color: white;
+    outline: none;
+    position: absolute;
+    top: 1.6rem;
+    left: 1.6rem;
+    font-size: 2.5rem;
+    z-index: 5;
+    &:hover {
+        cursor: pointer;
+    }
+}

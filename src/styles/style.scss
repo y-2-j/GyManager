@@ -1,0 +1,15 @@
+@import 'https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css';
+@import 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css';
+
+@import './base/base';
+
+@import './components/logo-button';
+@import './components/inputs';
+@import './components/navbar';
+@import './components/menu';
+@import './components/branches';
+@import './components/branch.scss';
+@import './components/login-signup';
+@import './components/front-page';
+@import './components/buttons';
+@import './components/profile-page';
