@@ -1,0 +1,50 @@
+.menu {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: #E8D7FF;
+    opacity: 0.9;
+    z-index: 1000;
+    
+
+    &__link {
+        display: block;
+        margin: 1.6rem 14rem;
+        
+        padding: 0.8rem;
+        font-size: 3rem;
+        
+        background: linear-gradient(135deg,#E8D7FF 0%,#E8D7FF 50%,#cfc8e6 50%);
+        background-size: 200%;
+        color: navy;
+        
+        &:hover {
+            color: lighten(indigo, 20%);
+            background-position: 98%;
+            transition: background-position 500ms;
+        }
+    }
+
+    &__contents {
+        text-align: center;
+        margin: 30vh auto;
+        width: 50%;
+        height: 50%;
+    }
+
+    &__close-btn {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 1rem 2rem;
+        font-size: 3rem;
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}

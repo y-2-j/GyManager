@@ -4,7 +4,9 @@
   "description": "A Gym Management System using MySQL Database",
   "main": "app.js",
   "scripts": {
-    "start": "node app"
+    "start": "node app",
+    "build": "gulp sass",
+    "sass:watch": "gulp sass:watch"
   },
   "repository": {
     "type": "git",
@@ -25,5 +27,9 @@
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "sequelize": "^4.37.10"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-sass": "^4.0.1"
   }
 }
